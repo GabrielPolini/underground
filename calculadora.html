@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Compra</title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #1e1e2f;
+            color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 800px;
+            margin: 50px auto;
+            background-color: #292941;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+            padding: 30px;
+            text-align: center;
+        }
+
+        h1 {
+            color: #ff7f50;
+            font-size: 36px;
+            margin-bottom: 10px;
+        }
+
+        p {
+            color: #bbb;
+            font-size: 18px;
+            margin-bottom: 20px;
+        }
+
+        img {
+            width: 120px;
+            height: auto;
+            display: block;
+            margin: 0 auto 20px;
+        }
+
+        table {
+            width: 100%;
+            margin-top: 20px;
+            border-collapse: collapse;
+            background-color: #33334d;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        th, td {
+            padding: 15px;
+            text-align: center;
+            border: none;
+            color: #fff;
+            font-size: 16px;
+        }
+
+        th {
+            background-color: #44445a;
+        }
+
+        td {
+            background-color: #3a3a52;
+        }
+
+        input[type="number"], input[type="text"], select {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            background-color: #292941;
+            color: #fff;
+            border-bottom: 2px solid #ff7f50;
+            margin-bottom: 20px;
+            font-size: 16px;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+
+        input[type="number"]:focus, input[type="text"]:focus, select:focus {
+            border-bottom: 2px solid #ff6347;
+            outline: none;
+        }
+
+        .total {
+            margin-top: 30px;
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        button {
+            background-color: #ff7f50;
+            color: #fff;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 18px;
+            margin-top: 20px;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #ff6347;
+        }
+
+        .materials {
+            color: #ff7f50;
+            font-size: 14px;
+            margin-top: 5px;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <img src="alogo.webp" alt="Logo">
+        <h1>Calculadora de Compra</h1>
+    
+        <div class="form">
+            <label for="seller">Nome do Cliente:</label>
+            <input type="text" id="seller" placeholder="Insira o nome do cliente">
+
+            <label for="location">Localização:</label>
+            <select id="location" onchange="calculateTotal()">
+                <option value="mec">Mecânica - Sem taxa</option>
+                <option value="paleto">Paleto - $100</option>
+                <option value="sandy">Sandy - $200</option>
+                <option value="outro">Outro - $250</option>
+            </select>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Produto</th>
+                        <th>Preço Unitário</th>
+                        <th>Quantidade</th>
+                        <th>Valor Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Reparo Padrão (Motor + Lataria)<br>
+                            <p><small>2x PLASTICOS, 1x COBRE, 3x FERROS</small></p>
+                        </td>
+                        <td>$ <span id="unitPriceRepair">200.00</span></td>
+                        <td><input type="number" id="quantityRepair" value="0" min="0" oninput="calculateTotal()"></td>
+                        <td>$ <span id="totalPriceRepair">0.00</span></td>
+                    </tr>
+                    <tr>
+                        <td>Reparo + Checkup de Status<br>
+                            <p><small></small></p>
+                        </td>
+                        <td>$ <span id="unitPriceCheckup">250.00</span></td>
+                        <td><input type="number" id="quantityCheckup" value="0" min="0" oninput="calculateTotal()"></td>
+                        <td>$ <span id="totalPriceCheckup">0.00</span></td>
+                    </tr>
+                    <tr>
+                        <td>Suspensão<br>
+                            <p><small>4x PLASTICOS, 10x ALUMINIOS, 1x VIDRO, 12x FERROS</small></p>
+                        </td>
+                        <td>$ <span id="unitPriceSuspension">800.00</span></td>
+                        <td><input type="number" id="quantitySuspension" value="0" min="0" oninput="calculateTotal()"></td>
+                        <td>$ <span id="totalPriceSuspension">0.00</span></td>
+                    </tr>
+                    <tr>
+                        <td>Óleo do Motor<br>
+                            <p><small>2x PLASTICO, 1x ALUMINIO</small></p>
+                        </td>
+                        <td>$ <span id="unitPriceOil">100.00</span></td>
+                        <td><input type="number" id="quantityOil" value="0" min="0" oninput="calculateTotal()"></td>
+                        <td>$ <span id="totalPriceOil">0.00</span></td>
+                    </tr>
+                    <tr>
+                        <td>Embreagem<br>
+                            <p><small>5x PLASTICOS, 6x COBRES, 1x VIDRO, 10x FERROS</small></p>
+                        </td>
+                        <td>$ <span id="unitPriceClutch">350.00</span></td>
+                        <td><input type="number" id="quantityClutch" value="0" min="0" oninput="calculateTotal()"></td>
+                        <td>$ <span id="totalPriceClutch">0.00</span></td>
+                    </tr>
+                    <tr>
+                        <td>Filtro de ar<br>
+                            <p><small>4x PLASTICOS, 1x COBRE, 2x ALUMINIOS</small></p>
+                        </td>
+                        <td>$ <span id="unitPriceAirFilter">100</span></td>
+                        <td><input type="number" id="quantityAirFilter" value="0" min="0" oninput="calculateTotal()"></td>
+                        <td>$ <span id="totalPriceAirFilter">0.00</span></td>
+                    </tr>
+                    <tr>
+                        <td>Vela de Ignição<br>
+                            <p><small>2x PLASTICOS, 3x COBRES, 1x FERRO</small></p>
+                        </td>
+                        <td>$ <span id="unitPriceSparkPlug">500.00</span></td>
+                        <td><input type="number" id="quantitySparkPlug" value="0" min="0" oninput="calculateTotal()"></td>
+                        <td>$ <span id="totalPriceSparkPlug">0.00</span></td>
+                    </tr>
+                    <tr>
+                        <td>Pastilha de freio<br>
+                            <p><small>1x PLASTICO, 4x COBRES, 8x ALUMINIOS, 10x FERROS</small></p>
+                        </td>
+                        <td>$ <span id="unitPriceBrakePad">1.200.00</span></td>
+                        <td><input type="number" id="quantityBrakePad" value="0" min="0" oninput="calculateTotal()"></td>
+                        <td>$ <span id="totalPriceBrakePad">0.00</span></td>
+                    </tr>
+                    <tr>
+                        <td>Pneu<br>
+                            <p><small>3x PLASTICO, 8x BORRACHA, 1x COBRE, 5x FERRO</small></p>
+                        </td>
+                        <td>$ <span id="unitPriceTire">900.00</span></td>
+                        <td><input type="number" id="quantityTire" value="0" min="0" oninput="calculateTotal()"></td>
+                        <td>$ <span id="totalPriceTire">0.00</span></td>
+                    </tr>
+                    <tr>
+                        <td>Maçarico<br>
+                            <p><small>5x FERRO, 1X COBRE</small></p>
+                        </td>
+                        <td>$ <span id="unitPriceTorch">100.00</span></td>
+                        <td><input type="number" id="quantityTorch" value="0" min="0" oninput="calculateTotal()"></td>
+                        <td>$ <span id="totalPriceTorch">0.00</span></td>
+                    </tr>
+                   
+                </tbody>
+            </table>
+    
+            <div class="total">
+                Total: $ <span id="finalTotal">0.00</span>
+            </div>
+
+            <button onclick="generateExtract()">Gerar Extrato</button>
+        </div>
+    </div>
+
+    <script>
+        function calculateTotal() {
+            const prices = {
+                repair: parseFloat(document.getElementById("unitPriceRepair").innerText),
+                checkup: parseFloat(document.getElementById("unitPriceCheckup").innerText),
+                suspension: parseFloat(document.getElementById("unitPriceSuspension").innerText),
+                oil: parseFloat(document.getElementById("unitPriceOil").innerText),
+                clutch: parseFloat(document.getElementById("unitPriceClutch").innerText),
+                airFilter: parseFloat(document.getElementById("unitPriceAirFilter").innerText),
+                sparkPlug: parseFloat(document.getElementById("unitPriceSparkPlug").innerText),
+                brakePad: parseFloat(document.getElementById("unitPriceBrakePad").innerText),
+                tire: parseFloat(document.getElementById("unitPriceTire").innerText),
+                torch: parseFloat(document.getElementById("unitPriceTorch").innerText),
+               
+            };
+
+            const quantities = {
+                repair: parseFloat(document.getElementById("quantityRepair").value) || 0,
+                checkup: parseFloat(document.getElementById("quantityCheckup").value) || 0,
+                suspension: parseFloat(document.getElementById("quantitySuspension").value) || 0,
+                oil: parseFloat(document.getElementById("quantityOil").value) || 0,
+                clutch: parseFloat(document.getElementById("quantityClutch").value) || 0,
+                airFilter: parseFloat(document.getElementById("quantityAirFilter").value) || 0,
+                sparkPlug: parseFloat(document.getElementById("quantitySparkPlug").value) || 0,
+                brakePad: parseFloat(document.getElementById("quantityBrakePad").value) || 0,
+                tire: parseFloat(document.getElementById("quantityTire").value) || 0,
+                torch: parseFloat(document.getElementById("quantityTorch").value) || 0,
+               
+            };
+
+            const totals = {
+                repair: prices.repair * quantities.repair,
+                checkup: prices.checkup * quantities.checkup,
+                suspension: prices.suspension * quantities.suspension,
+                oil: prices.oil * quantities.oil,
+                clutch: prices.clutch * quantities.clutch,
+                airFilter: prices.airFilter * quantities.airFilter,
+                sparkPlug: prices.sparkPlug * quantities.sparkPlug,
+                brakePad: prices.brakePad * quantities.brakePad,
+                tire: prices.tire * quantities.tire,
+                torch: prices.torch * quantities.torch,
+               
+            };
+
+            document.getElementById("totalPriceRepair").innerText = totals.repair.toFixed(2);
+            document.getElementById("totalPriceCheckup").innerText = totals.checkup.toFixed(2);
+            document.getElementById("totalPriceSuspension").innerText = totals.suspension.toFixed(2);
+            document.getElementById("totalPriceOil").innerText = totals.oil.toFixed(2);
+            document.getElementById("totalPriceClutch").innerText = totals.clutch.toFixed(2);
+            document.getElementById("totalPriceAirFilter").innerText = totals.airFilter.toFixed(2);
+            document.getElementById("totalPriceSparkPlug").innerText = totals.sparkPlug.toFixed(2);
+            document.getElementById("totalPriceBrakePad").innerText = totals.brakePad.toFixed(2);
+            document.getElementById("totalPriceTire").innerText = totals.tire.toFixed(2);
+            document.getElementById("totalPriceTorch").innerText = totals.torch.toFixed(2);
+           
+
+            const totalFinal = Object.values(totals).reduce((acc, curr) => acc + curr, 0);
+            document.getElementById("finalTotal").innerText = totalFinal.toFixed(2);
+
+            const location = document.getElementById("location").value;
+            let locationCost = 0;
+
+            if (location === "paleto") {
+                locationCost = 100;
+            } else if (location === "sandy") {
+                locationCost = 200;
+            } else if (location === "outro") {
+                locationCost = 250;
+            }
+
+            const totalFinalWithLocation = totalFinal + locationCost;
+            document.getElementById("finalTotal").innerText = totalFinalWithLocation.toFixed(2);
+        }
+
+        function generateExtract() {
+            const clientName = document.getElementById("seller").value;
+            const location = document.getElementById("location").value;
+            const total = document.getElementById("finalTotal").innerText;
+
+            const extract = `Cliente: ${clientName}\nLocal: ${location}\nTotal: $ ${total}`;
+            navigator.clipboard.writeText(extract).then(() => {
+                alert("Extrato copiado para a área de transferência!");
+            }).catch(err => {
+                console.error("Erro ao copiar o extrato: ", err);
+            });
+        }
+    </script>
+</body>
+</html>
